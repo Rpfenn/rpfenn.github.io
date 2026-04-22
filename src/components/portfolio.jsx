@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const PROJECTS = [
   {
@@ -88,70 +88,6 @@ function useMounted() {
   return m;
 }
 
-function Cursor() {
-  const ref = useRef(null);
-  const dotRef = useRef(null);
-  useEffect(() => {
-    let x = 0,
-      y = 0,
-      tx = 0,
-      ty = 0;
-    const move = (e) => {
-      tx = e.clientX;
-      ty = e.clientY;
-    };
-    window.addEventListener("mousemove", move);
-    const raf = () => {
-      x += (tx - x) * 0.18;
-      y += (ty - y) * 0.18;
-      if (ref.current) {
-        ref.current.style.transform = `translate(${x - 16}px,${ty - 16}px)`;
-      }
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${tx - 3}px,${ty - 3}px)`;
-      }
-      requestAnimationFrame(raf);
-    };
-    requestAnimationFrame(raf);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-  return (
-    <>
-      <div
-        ref={ref}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: 32,
-          height: 32,
-          border: "1px solid rgba(255,255,255,0.4)",
-          borderRadius: "50%",
-          pointerEvents: "none",
-          zIndex: 9999,
-          mixBlendMode: "difference",
-          transition: "width 0.2s,height 0.2s",
-        }}
-      />
-      <div
-        ref={dotRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: 6,
-          height: 6,
-          background: "white",
-          borderRadius: "50%",
-          pointerEvents: "none",
-          zIndex: 9999,
-          mixBlendMode: "difference",
-        }}
-      />
-    </>
-  );
-}
-
 function Noise() {
   return (
     <svg
@@ -231,7 +167,6 @@ function ProjectCard({ project, index }) {
         border: `1px solid ${hovered ? tc.accent + "55" : "rgba(255,255,255,0.07)"}`,
         background: hovered ? tc.bg : "rgba(255,255,255,0.02)",
         textDecoration: "none",
-        cursor: "none",
         transition: "all 0.3s cubic-bezier(0.23,1,0.32,1)",
         transform: hovered ? "translateY(-4px)" : "translateY(0)",
         animationName: "fadeUp",
@@ -371,7 +306,6 @@ function FilterPill({ tag, active, onClick }) {
             ? "#fff"
             : tc.accent
           : "rgba(255,255,255,0.35)",
-        cursor: "none",
         transition: "all 0.2s",
         textTransform: "uppercase",
       }}
@@ -402,7 +336,6 @@ export default function Portfolio() {
         background: "#080808",
         color: "#fff",
         position: "relative",
-        cursor: "none",
         overflowX: "hidden",
       }}
     >
@@ -428,7 +361,6 @@ export default function Portfolio() {
       <Noise />
       <Grid />
       <div className="scanline" />
-      <Cursor />
 
       {/* Ambient orbs */}
       <div
@@ -567,7 +499,6 @@ export default function Portfolio() {
                   borderRadius: 999,
                   padding: "6px 14px",
                   transition: "all 0.2s",
-                  cursor: "none",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
