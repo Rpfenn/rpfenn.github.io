@@ -1,75 +1,73 @@
 import { useState, useEffect } from "react";
+import { LANGUAGE_COLORS } from "../constants/languageColors";
 
 const PROJECTS = [
   {
     id: 1,
-    name: "project-one",
-    tag: "web",
+    name: "Tempo AI - An AI DJ",
+    tags: ["web", "ml"],
     icon: "◈",
-    lang: "TypeScript",
-    langColor: "#2b7489",
-    desc: "Full-stack web app for tracking and visualizing personal goals with real-time collaboration.",
-    url: "https://github.com/yourname/project-one",
-    year: "2024",
+    languages: ["React", "Python"],
+    desc: "An AI-powered DJ that can automatically mix songs, generate seamless transitions, and create custom playlists based on user preferences. Built with a React front-end and a Python back-end leveraging machine learning for our transition model and algorithms.(Senior Project with 4 members)",
+    links: [
+      {
+        label: "Front-end Repo",
+        url: "https://github.com/alexpower9/ai-dj-front-end",
+      },
+      {
+        label: "Back-end Repo",
+        url: "https://github.com/AnzilottiChristopher/AI-DJ",
+      },
+    ],
+    year: "2025-2026",
   },
   {
     id: 2,
-    name: "ml-toolkit",
-    tag: "ml",
+    name: "FanWager",
+    tags: ["tool", "game", "api"],
     icon: "◉",
-    lang: "Python",
-    langColor: "#3572A5",
-    desc: "Lightweight ML utilities for data preprocessing, feature engineering, and model evaluation.",
-    url: "https://github.com/yourname/ml-toolkit",
-    year: "2024",
+    languages: ["Kotlin", "SQL"],
+    desc: "A mobile app that lets sports fans place wagers on their favorite teams, with real odds from various sports APIs. Built with Kotlin for Android, featuring a sleek UI, real-time odds updates, and a fun points system to keep fans engaged throughout the season. (No real money involved, simply for fun)",
+    links: [
+      { label: "repo", url: "https://github.com/Rpfenn/FanWager" },
+    ],
+    year: "2025",
   },
   {
     id: 3,
-    name: "devflow",
-    tag: "cli",
+    name: "Work Organizer",
+    tags: ["tool"],
     icon: "◎",
-    lang: "Go",
-    langColor: "#00ADD8",
-    desc: "CLI tool that automates developer workflows — git branching, env setup, deployment checks.",
-    url: "https://github.com/yourname/devflow",
-    year: "2023",
+    languages: ["Python", "SQL"],
+    desc: "An app that allows the user to put in tasks for classes in a calendar with ease. Keeps track of all assignments for each class in a list and a calendar view.",
+    links: [{ label: "repo", url: "https://github.com/rpfenn/work-organizer" }],
+    year: "2024-2025",
   },
   {
     id: 4,
-    name: "open-api",
-    tag: "api",
-    icon: "◍",
-    lang: "TypeScript",
-    langColor: "#2b7489",
-    desc: "REST API boilerplate with auth, rate limiting, caching, and OpenAPI docs generation.",
-    url: "https://github.com/yourname/open-api",
+    name: "Time Dynasties",
+    tags: ["game"],
+    icon: "◎",
+    languages: ["Java"],
+    desc: "An RPG game where players travel through different time periods, battling enemies in minigames, and collecting items. (Team project with 4 members)",
+    links: [{ label: "repo", url: "https://github.com/ChristianKilduff/devdynasty-game" }],
     year: "2023",
   },
   {
     id: 5,
-    name: "snapdiff",
-    tag: "tool",
-    icon: "◌",
-    lang: "JavaScript",
-    langColor: "#f1e05a",
-    desc: "Visual snapshot diffing tool for catching UI regressions in component libraries.",
-    url: "https://github.com/yourname/snapdiff",
-    year: "2024",
+    name: "Alfred AI",
+    tags: ["ml", "tool"],
+    icon: "◎",
+    languages: ["Python", "React"],
+    desc: "(Active development)An AI-powered assistant that helps users manage tasks and automate workflows. Built with a Python back-end and a React front-end, leveraging machine learning for intelligent task recommendations.",
+    links: [{ label: "repo", url: "https://github.com/Rpfenn/Alfred" }],
+    year: "2026(ongoing)",
   },
-  {
-    id: 6,
-    name: "gridworld",
-    tag: "game",
-    icon: "◆",
-    lang: "Rust",
-    langColor: "#dea584",
-    desc: "Browser-based puzzle game with procedural level generation and a built-in level editor.",
-    url: "https://github.com/yourname/gridworld",
-    year: "2023",
-  },
+  
 ];
 
-const TAGS = ["all", "web", "ml", "cli", "api", "tool", "game"];
+// const TAGS = ["all", "web", "ml", "cli", "api", "tool", "game"];
+const TAGS = ["all", "web", "api", "tool", "game"];
 
 const TAG_COLORS = {
   web: { bg: "#0a1628", accent: "#4f9cf9", label: "WEB" },
@@ -147,14 +145,24 @@ function CardGlow({ color }) {
 
 function ProjectCard({ project, index }) {
   const [hovered, setHovered] = useState(false);
-  const tc = TAG_COLORS[project.tag];
+  const projectTags =
+    project.tags && project.tags.length > 0
+      ? project.tags
+      : project.tag
+        ? [project.tag]
+        : [];
+  const primaryTag = projectTags[0] || "web";
+  const tc = TAG_COLORS[primaryTag] || TAG_COLORS.web;
+  const projectLanguages =
+    project.languages && project.languages.length > 0
+      ? project.languages
+      : project.lang
+        ? [project.lang]
+        : [];
   const delay = `${index * 80}ms`;
 
   return (
-    <a
-      href={project.url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <article
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -195,22 +203,39 @@ function ProjectCard({ project, index }) {
         >
           {project.icon}
         </span>
-        <span
+        <div
           style={{
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.12em",
-            padding: "3px 8px",
-            borderRadius: 999,
-            background: hovered ? tc.accent + "22" : "rgba(255,255,255,0.06)",
-            color: hovered ? tc.accent : "rgba(255,255,255,0.35)",
-            border: `1px solid ${hovered ? tc.accent + "44" : "rgba(255,255,255,0.08)"}`,
-            transition: "all 0.3s",
-            fontFamily: "'DM Mono', monospace",
+            display: "flex",
+            gap: 6,
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
           }}
         >
-          {tc.label}
-        </span>
+          {projectTags.map((tag) => {
+            const tagColor = TAG_COLORS[tag] || TAG_COLORS.web;
+            return (
+              <span
+                key={tag}
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  padding: "3px 8px",
+                  borderRadius: 999,
+                  background: hovered
+                    ? tagColor.accent + "22"
+                    : "rgba(255,255,255,0.06)",
+                  color: hovered ? tagColor.accent : "rgba(255,255,255,0.35)",
+                  border: `1px solid ${hovered ? tagColor.accent + "44" : "rgba(255,255,255,0.08)"}`,
+                  transition: "all 0.3s",
+                  fontFamily: "'DM Mono', monospace",
+                }}
+              >
+                {tagColor.label}
+              </span>
+            );
+          })}
+        </div>
       </div>
 
       <div>
@@ -248,26 +273,48 @@ function ProjectCard({ project, index }) {
           borderTop: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: "50%",
-              background: project.langColor,
-              display: "inline-block",
-              flexShrink: 0,
-            }}
-          />
-          <span
-            style={{
-              fontSize: 12,
-              color: "rgba(255,255,255,0.35)",
-              fontFamily: "'DM Mono',monospace",
-            }}
-          >
-            {project.lang}
-          </span>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            flexWrap: "wrap",
+          }}
+        >
+          {projectLanguages.map((lang) => (
+            <span
+              key={lang}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "2px 8px",
+                borderRadius: 999,
+                border: "1px solid rgba(255,255,255,0.1)",
+                background: "rgba(255,255,255,0.03)",
+              }}
+            >
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: "50%",
+                  background: LANGUAGE_COLORS[lang] || "#9ca3af",
+                  display: "inline-block",
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 12,
+                  color: "rgba(255,255,255,0.35)",
+                  fontFamily: "'DM Mono',monospace",
+                }}
+              >
+                {lang}
+              </span>
+            </span>
+          ))}
         </div>
         <span
           style={{
@@ -279,7 +326,41 @@ function ProjectCard({ project, index }) {
           {project.year}
         </span>
       </div>
-    </a>
+
+      {project.links?.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            flexWrap: "wrap",
+            marginTop: 10,
+          }}
+        >
+          {project.links.map((link) => (
+            <a
+              key={link.url}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: 10,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: hovered ? tc.accent : "rgba(255,255,255,0.45)",
+                border: `1px solid ${hovered ? tc.accent + "44" : "rgba(255,255,255,0.12)"}`,
+                borderRadius: 999,
+                padding: "5px 10px",
+                textDecoration: "none",
+                transition: "all 0.2s",
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </article>
   );
 }
 
@@ -327,7 +408,13 @@ export default function Portfolio() {
   }, []);
 
   const visible =
-    filter === "all" ? PROJECTS : PROJECTS.filter((p) => p.tag === filter);
+    filter === "all"
+      ? PROJECTS
+      : PROJECTS.filter((p) => {
+          const projectTags =
+            p.tags && p.tags.length > 0 ? p.tags : p.tag ? [p.tag] : [];
+          return projectTags.includes(filter);
+        });
 
   return (
     <div
