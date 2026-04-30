@@ -59,7 +59,7 @@ const PROJECTS = [
     tags: ["ml", "tool"],
     icon: "◎",
     languages: ["Python", "React"],
-    desc: "(Active development)An AI-powered assistant that helps users manage tasks and automate workflows. Built with a Python back-end and a React front-end, leveraging machine learning for intelligent task recommendations.",
+    desc: "(Active development)An AI-powered assistant that helps users manage tasks and automate workflows. Built with a Python back-end and currently developing a React front-end, leveraging machine learning for intelligent task recommendations.",
     links: [{ label: "repo", url: "https://github.com/Rpfenn/Alfred" }],
     year: "2026(ongoing)",
   },
@@ -682,7 +682,7 @@ export default function Portfolio() {
               letterSpacing: "0.08em",
             }}
           >
-            © {new Date().getFullYear()} YOUR NAME
+            © {new Date().getFullYear()} Ryan Fennelly
           </span>
           <span
             style={{
